@@ -1,4 +1,4 @@
-const swaggerAutogen = require('swagger-autogen')();
+const swaggerAutogen = require('swagger-autogen')({ openapi: '3.0.0'});
 
 const doc = {
   info: {
@@ -12,13 +12,10 @@ const doc = {
         description: "Development server"
     },
     {
-        url: 'https://recipe-book-api-placeholder.onrender.com',
+        url: 'https://recipebook-9aq5.onrender.com',
         description: "Production server"
     }
   ],            
-  schemes: [],              // by default: ['http']
-  consumes: [],             // by default: ['application/json']
-  produces: [],             // by default: ['application/json']
   tags: [                   // by default: empty Array
     {
       name: 'Book',             // Tag name
@@ -37,8 +34,6 @@ const doc = {
       description: 'Endpoints for users'  // Tag description
     }
   ],
-  securityDefinitions: {},  // by default: empty object
-  definitions: {},           // by default: empty object
   components: {
     schemas: {
       Recipe: {
