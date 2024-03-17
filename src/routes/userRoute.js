@@ -18,16 +18,13 @@ router.get('/profile', utils.handleErrors((req, res, next) => {
         #swagger.description = 'Get user profile'
     */
     /* #swagger.responses[200] = {
-        description: 'Profile found',
-        schema: { }
+        description: 'Profile found'
     } */
     /* #swagger.responses[404] = {
-        description: 'Profile not found',
-        schema: { }
+        description: 'Profile not found'
     } */
     /* #swagger.responses[500] = {
-        description: 'Server error',
-        schema: { }
+        description: 'Server error'
     } */
     try {
         userController.getProfile(req, res);
