@@ -1,0 +1,1464 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Recipe Book REST API",
+    "description": "This Api is used to store recipes and compile them into books"
+  },
+  "host": "localhost:3000",
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Development server"
+    },
+    {
+      "url": "https://recipe-book-api-placeholder.onrender.com",
+      "description": "Production server"
+    }
+  ],
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Book",
+      "description": "Endpoints for books"
+    },
+    {
+      "name": "Recipe",
+      "description": "Endpoints for recipes"
+    },
+    {
+      "name": "Review",
+      "description": "Endpoints for reviews"
+    },
+    {
+      "name": "User",
+      "description": "Endpoints for users"
+    }
+  ],
+  "schemes": [],
+  "securityDefinitions": {},
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/book/": {
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Get all books",
+        "responses": {
+          "200": {
+            "description": "Books found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Books not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Create a book",
+        "responses": {
+          "200": {
+            "description": "Book created",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "in": "body",
+          "description": "Book data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        }
+      }
+    },
+    "/book/{id}": {
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Get a book by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Book ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Book not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/book/{userid}": {
+      "get": {
+        "tags": [
+          "User",
+          "Book"
+        ],
+        "description": "Get user",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe books found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Recipe books not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User",
+          "Book"
+        ],
+        "description": "Create a recipe book",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Recipe book created",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "in": "body",
+          "description": "Book data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        }
+      }
+    },
+    "/book/{userid}/{id}": {
+      "put": {
+        "tags": [
+          "User",
+          "Book"
+        ],
+        "description": "Update a posted recipe book",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe book updated",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Book not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User",
+          "Book"
+        ],
+        "description": "Delete a recipe book",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe book deleted",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Book not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe/": {
+      "get": {
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Get all recipes",
+        "responses": {
+          "200": {
+            "description": "Recipes found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Recipes not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Create a new recipe",
+        "responses": {
+          "201": {
+            "description": "Recipe created",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Recipe information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        }
+      }
+    },
+    "/recipe/{id}": {
+      "get": {
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Get a recipe by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Recipe not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Update a recipe",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe updated",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Recipe not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Recipe information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Delete a recipe",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe deleted",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Recipe not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe/search/{name}": {
+      "get": {
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Search for a recipe by its name",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Recipe not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe/random": {
+      "get": {
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Get a random recipe",
+        "responses": {
+          "200": {
+            "description": "Random recipe found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Recipe not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe/{userid}": {
+      "get": {
+        "tags": [
+          "User",
+          "Recipe"
+        ],
+        "description": "Get user",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipes found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Recipes not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe/{userid}/{id}": {
+      "get": {
+        "tags": [
+          "User",
+          "Recipe"
+        ],
+        "description": "Get user",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Recipe not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User",
+          "Recipe"
+        ],
+        "description": "Like a recipe",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe liked",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Recipe not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "in": "body",
+          "description": "Recipe data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User",
+          "Recipe"
+        ],
+        "description": "Update a liked recipe",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe updated",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Recipe not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User",
+          "Recipe"
+        ],
+        "description": "Unlike a recipe",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe unliked",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Recipe not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe/{user}/search/{name}": {
+      "get": {
+        "tags": [
+          "User",
+          "Recipe"
+        ],
+        "description": "Search for user",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipes found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Recipes not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/review/": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "description": "Get all reviews",
+        "responses": {
+          "200": {
+            "description": "Reviews found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Reviews not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Review"
+        ],
+        "description": "Create a new review",
+        "responses": {
+          "201": {
+            "description": "Review created",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/review/{id}": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "description": "Get a review by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Review ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Review not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Review"
+        ],
+        "description": "Update a review",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review updated",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Review not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Review"
+        ],
+        "description": "Delete a review",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review deleted",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Review not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/user/profile": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Get user profile",
+        "responses": {
+          "200": {
+            "description": "Profile found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Profile not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/settings": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Get user settings",
+        "responses": {
+          "200": {
+            "description": "Settings found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Settings not found",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "Update user settings",
+        "responses": {
+          "200": {
+            "description": "Settings updated",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
