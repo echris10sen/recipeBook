@@ -11,18 +11,16 @@ const utils = require('../utils');
 router.get('/', utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['Book']
         #swagger.description = 'Get all books'
+
     */
     /* #swagger.responses[200] = {
-        description: 'Books found',
-        schema: { }
+        description: 'Books found'
     } */
     /* #swagger.responses[404] = {
-        description: 'Books not found',
-        schema: { }
+        description: 'Books not found'
     } */
     /* #swagger.responses[500] = {
-        description: 'Server error',
-        schema: { }
+        description: 'Server error'
     } */
     try {
         bookController.getBooks(req, res);
@@ -72,7 +70,7 @@ router.post('/', utils.handleErrors((req, res, next) => {
         required: true,
         content: {
             'application/json': {
-                schema: { }
+                schema: { $ref: "#/components/schemas/Book" }
             }
         }
     } */
@@ -134,21 +132,18 @@ router.post('/:userid', utils.handleErrors((req, res, next) => {
         required: true,
         content: {
             'application/json': {
-                schema: { }
+                schema: { $ref: "#/components/schemas/Book"}
             }
         }
     } */
     /* #swagger.responses[201] = {
         description: 'Recipe book created',
-        schema: { }
     } */
     /* #swagger.responses[400] = {
         description: 'Invalid input',
-        schema: { }
     } */
     /* #swagger.responses[500] = {
         description: 'Server error',
-        schema: { }
     } */
     try {
         userController.createBook(req, res);
@@ -167,21 +162,27 @@ router.put('/:userid/:id', utils.handleErrors((req, res, next) => {
             required: true
             type: 'integer'
     } */
+    /* #swagger.requestBody = {
+        in: 'body',
+        description: 'Book data',
+        required: true,
+        content: {
+            'application/json': {
+                schema: { $ref: "#/components/schemas/Book"}
+            }
+        }
+    } */
     /* #swagger.responses[200] = {
         description: 'Recipe book updated',
-        schema: { }
     } */
     /* #swagger.responses[400] = {
         description: 'Invalid input',
-        schema: { }
     } */
     /* #swagger.responses[404] = {
         description: 'Book not found',
-        schema: { }
     } */
     /* #swagger.responses[500] = {
         description: 'Server error',
-        schema: { }
     } */
     try {
         userController.updateBook(req, res);
@@ -201,16 +202,13 @@ router.delete('/:userid/:id', utils.handleErrors((req, res, next) => {
             type: 'integer'
     } */
     /* #swagger.responses[200] = {
-        description: 'Recipe book deleted',
-        schema: { }
+        description: 'Recipe book deleted'
     } */
     /* #swagger.responses[404] = {
-        description: 'Book not found',
-        schema: { }
+        description: 'Book not found'
     } */
     /* #swagger.responses[500] = {
-        description: 'Server error',
-        schema: { }
+        description: 'Server error'
     } */
     try {
         userController.deleteBook(req, res);

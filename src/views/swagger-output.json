@@ -50,7 +50,10 @@
     },
     "/auth/login": {
       "get": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Login",
         "responses": {
           "200": {
             "description": "OK"
@@ -60,7 +63,10 @@
     },
     "/auth/logout": {
       "get": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Logout",
         "responses": {
           "200": {
             "description": "OK"
@@ -76,34 +82,13 @@
         "description": "Get all books",
         "responses": {
           "200": {
-            "description": "Books found",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Books found"
           },
           "404": {
-            "description": "Books not found",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Books not found"
           },
           "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Server error"
           }
         }
       },
@@ -153,7 +138,9 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {}
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              }
             }
           }
         }
@@ -272,34 +259,13 @@
         ],
         "responses": {
           "201": {
-            "description": "Recipe book created",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Recipe book created"
           },
           "400": {
-            "description": "Invalid input",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Invalid input"
           },
           "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Server error"
           }
         },
         "requestBody": {
@@ -308,7 +274,9 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {}
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              }
             }
           }
         }
@@ -337,42 +305,26 @@
         ],
         "responses": {
           "200": {
-            "description": "Recipe book updated",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Recipe book updated"
           },
           "400": {
-            "description": "Invalid input",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Invalid input"
           },
           "404": {
-            "description": "Book not found",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Book not found"
           },
           "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
+            "description": "Server error"
+          }
+        },
+        "requestBody": {
+          "in": "body",
+          "description": "Book data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
               }
             }
           }
@@ -400,37 +352,16 @@
         ],
         "responses": {
           "200": {
-            "description": "Recipe book deleted",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Recipe book deleted"
           },
           "204": {
             "description": "No Content"
           },
           "404": {
-            "description": "Book not found",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Book not found"
           },
           "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Server error"
           }
         }
       }
@@ -443,34 +374,13 @@
         "description": "Get all recipes",
         "responses": {
           "200": {
-            "description": "Recipes found",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Recipes found"
           },
           "404": {
-            "description": "Recipes not found",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Recipes not found"
           },
           "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Server error"
           }
         }
       },
@@ -516,7 +426,9 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {}
+              "schema": {
+                "$ref": "#components/schemas/Recipe"
+              }
             }
           }
         }
@@ -1154,26 +1066,31 @@
           "Review"
         ],
         "description": "Create a new review",
+        "parameters": [
+          {
+            "name": "Review",
+            "in": "body",
+            "description": "Review data",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Review"
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
         "responses": {
           "201": {
-            "description": "Review created",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Review created"
           },
           "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Server error"
           }
         }
       }
@@ -1457,6 +1374,84 @@
               }
             }
           }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Recipe": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "instructions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cookTime": {
+            "type": "number"
+          },
+          "prepTime": {
+            "type": "number"
+          },
+          "servings": {
+            "type": "number"
+          },
+          "category": {
+            "type": "string"
+          },
+          "allergyInfo": {
+            "type": "string"
+          },
+          "nutritionInfo": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Book": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "recipes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Review": {
+      "type": "object",
+      "properties": {
+        "rating": {
+          "type": "number"
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
         }
       }
     }

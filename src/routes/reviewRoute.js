@@ -65,13 +65,22 @@ router.post('/', utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['Review']
         #swagger.description = 'Create a new review'
     */
+   /* #swagger.parameters['Review'] = {
+        in: 'body',
+        description: 'Review data',
+        required: true,
+        type: 'object',
+        content: {
+            'application/json': {
+                schema: { $ref: "#/components/schemas/Review" }
+            }
+        }
+    } */
     /* #swagger.responses[201] = {
         description: 'Review created',
-        schema: { }
     } */
     /* #swagger.responses[500] = {
         description: 'Server error',
-        schema: { }
     } */
     try {
         reviewController.createReview(req, res);

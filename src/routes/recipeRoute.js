@@ -15,16 +15,13 @@ router.get('/', utils.handleErrors((req, res, next) => {
         #swagger.description = 'Get all recipes'
     */
     /* #swagger.responses[200] = {
-        description: 'Recipes found',
-        schema: { }
+        description: 'Recipes found'
     } */
     /* #swagger.responses[404] = {
-        description: 'Recipes not found',
-        schema: { }
+        description: 'Recipes not found'
     } */
     /* #swagger.responses[500] = {
-        description: 'Server error',
-        schema: { }
+        description: 'Server error'
     } */
     try {
         console.log("GET /");
@@ -126,7 +123,7 @@ router.post('/', utils.handleErrors((req, res, next) => {
         required: true,
         content: {
             'application/json': {
-                schema: { }
+                schema: { $ref: "#components/schemas/Recipe" }
             }
         }
     } */
