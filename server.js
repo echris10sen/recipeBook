@@ -12,7 +12,8 @@ const env = require('dotenv');
 const express = require('express');
 const routes = require('./src/routes');
 const session = require('express-session');
-const RedisStore = require('connect-redis')(session);
+const { default: RedisStore } = require('connect-redis');
+const redis = require('redis');
 
 /************************************
  * Configuration
