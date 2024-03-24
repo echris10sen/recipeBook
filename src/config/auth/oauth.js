@@ -2,12 +2,10 @@ const {google} = require('googleapis');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const credentials = require('./client_secret_local2.json');
-
 const oauth2ClientDev = new google.auth.OAuth2(
-    credentials.web.client_id,
-    credentials.web.client_secret,
-    credentials.web.redirect_uris[0]
+    process.env.DEV_CLIENT_ID,
+    process.env.DEV_CLIENT_SECRET,
+    process.env.DEV_REDIRECT_URI
 );
 
 const oauth2ClientProd = new google.auth.OAuth2(
