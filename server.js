@@ -11,12 +11,14 @@ const colors = require('colors');
 const env = require('dotenv');
 const express = require('express');
 const routes = require('./src/routes');
+const session = require('express-session');
 
 /************************************
  * Configuration
  * **********************************/
 env.config();
 const app = express();
+const secure = process.env.NODE_ENV === 'production';
 
 // For debugging
 colors.enable();
@@ -26,6 +28,14 @@ colors.enable();
  * **********************************/
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Session
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure }
+}));
 
 /************************************
  * Routes

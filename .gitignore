@@ -1,3 +1,7 @@
 .env
 node_modules
 .rest
+client_secret.json
+client_secret_local.json
+client_secret_local2.json
+```
