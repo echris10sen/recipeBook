@@ -12,12 +12,14 @@ const env = require('dotenv');
 const express = require('express');
 const routes = require('./src/routes');
 const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
 
 /************************************
  * Configuration
  * **********************************/
 env.config();
 const app = express();
+const redisClient = redis.createClient();
 const secure = process.env.NODE_ENV === 'production';
 
 // For debugging
@@ -31,6 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Session
 app.use(session({
+  store: new RedisStore({ client: redisClient }),
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
