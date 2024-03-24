@@ -1,7 +1,5 @@
 const {google} = require('googleapis');
 const dotenv = require('dotenv');
-const { NULL } = require('mysql/lib/protocol/constants/types');
-const { get } = require('mongoose');
 dotenv.config();
 
 const credentials = require('./client_secret_local2.json');
@@ -47,31 +45,6 @@ const generateAuthUrl = () => {
     });
     return authorizationUrl;
 };
-
-
-
-// const getOAuth2Client = () => {
-//    if (!oauth2Client) {
-//         console.log('Creating new OAuth2 client');
-//         if (process.env.NODE_ENV === 'production') {
-//             oauth2Client = new google.auth.OAuth2(
-//                 process.env.CLIENT_ID,
-//                 process.env.CLIENT_SECRET,
-//                 process.env.REDIRECT_URI
-//             );
-//         } else {
-//             const credentials = require('./client_secret_local2.json');
-//             console.log(credentials.web.redirect_uris[0]);
-//             oauth2Client = new google.auth.OAuth2(
-//             credentials.web.client_id,
-//             credentials.web.client_secret,
-//             credentials.web.redirect_uris[0]
-//             );
-//         }
-//     };
-//     console.log('Returning OAuth2 client', oauth2Client);
-//     return oauth2Client;
-// }
 
 module.exports = {
     generateAuthUrl,
