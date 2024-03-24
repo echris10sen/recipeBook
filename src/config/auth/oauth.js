@@ -3,15 +3,15 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const oauth2ClientDev = new google.auth.OAuth2(
-    process.env.DEV_CLIENT_ID,
-    process.env.DEV_CLIENT_SECRET,
-    process.env.DEV_REDIRECT_URI
+        process.env.DEV_CLIENT_ID,
+        process.env.DEV_CLIENT_SECRET,
+        process.env.DEV_REDIRECT_URI
 );
 
 const oauth2ClientProd = new google.auth.OAuth2(
-    process.env.CLIENT_ID,
-    process.env.CLIENT_SECRET,
-    process.env.REDIRECT_URI
+        process.env.CLIENT_ID,
+        process.env.CLIENT_SECRET,
+        process.env.REDIRECT_URI
 );
 
 const oauth2Client = process.env.NODE_ENV === 'production' ? oauth2ClientProd : oauth2ClientDev;
