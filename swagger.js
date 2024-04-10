@@ -1,3 +1,5 @@
+const { authorizedbuyersmarketplace } = require('googleapis/build/src/apis/authorizedbuyersmarketplace');
+
 const swaggerAutogen = require('swagger-autogen')({ openapi: '3.0.0'});
 
 const doc = {
@@ -45,7 +47,18 @@ const doc = {
           ingredients: {
             type: 'array',
             items: {
-              type: 'string'
+              type: 'object',
+              properties: {
+                ingredient_name: {
+                  type: 'string'
+                },
+                quantity: {
+                  type: 'number'
+                },
+                units: {
+                  type: 'string'
+                }
+              }
             }
           },
           instructions: {
@@ -64,14 +77,42 @@ const doc = {
             type: 'number'
           },
           category: {
-            type: 'string'
+            type: 'array',
+            items: {
+              type: 'string'
+            }
           },
           allergyInfo: {
             type: 'string'
           },
-          nutritionInfo: {
+          nutrition: {
+            type: 'object',
+            properties: {
+              calories: {
+                type: 'number'
+              },
+              fat: {
+                type: 'number'
+              },
+              sugar: {
+                type: 'number'
+              },
+              protein: {
+                type: 'number'
+              },
+              sodium: {
+                type: 'number'
+              }
+            }
+          },
+          author: {
             type: 'string'
           },
+          authorId: {
+            type: 'string',
+            format: 'ObjectId',
+            description: 'The ID of the author of the recipe'
+          }
         }  
       },
       Book: {
@@ -80,10 +121,19 @@ const doc = {
           name: {
             type: 'string'
           },
+          author: {
+            type: 'string'
+          },
+          authorId: {
+            type: 'string',
+            format: 'ObjectId',
+            description: 'The ID of the author of the book'
+          },
           recipes: {
             type: 'array',
             items: {
-              type: 'string'
+              type: 'string',
+              format: 'ObjectId',
             }
           }
         }
@@ -96,6 +146,21 @@ const doc = {
           },
           comment: {
             type: 'string'
+          },
+          recipeId: {
+            type: 'string',
+            format: 'ObjectId',
+            description: 'The ID of the recipe being reviewed',
+          },
+          bookId: {
+            type: 'string',
+            format: 'ObjectId',
+            description: 'The ID of the book being reviewed',
+          },
+          authorId: {
+            type: 'string',
+            format: 'ObjectId',
+            description: 'The ID of the user who wrote the review',
           }
         }
       },

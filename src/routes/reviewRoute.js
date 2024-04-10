@@ -2,7 +2,9 @@
 const express = require('express');
 const router = express.Router();
 const reviewController = require('../controllers/reviewController');
+const reviewValidation = require('../utils/validation/reviewValidation');
 const utils = require('../utils');
+const { Api500Error } = require('../utils/errors/apiErrors');
 
 /************************************
  * General Review Routes
@@ -24,9 +26,8 @@ router.get('/', utils.handleErrors((req, res, next) => {
         schema: { }
     } */
     try {
-        reviewController.getReviews(req, res);
+        reviewController.getReviews(req, res, next);
     } catch (error) {
-        // ADD LATER: Error handling
         next(error);
     }
 }));
@@ -54,14 +55,16 @@ router.get('/:id', utils.handleErrors((req, res, next) => {
         schema: { }
     } */
     try {
-        reviewController.getReview(req, res);
+        reviewController.getReview(req, res, next);
     } catch (error) {
-        // ADD LATER: Error handling
         next(error);
     }
 }));
 
-router.post('/', utils.handleErrors((req, res, next) => {
+router.post('/', 
+    reviewValidation.addReviewRules(), 
+    reviewValidation.validateReview,
+    utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['Review']
         #swagger.description = 'Create a new review'
     */
@@ -79,22 +82,27 @@ router.post('/', utils.handleErrors((req, res, next) => {
     /* #swagger.responses[201] = {
         description: 'Review created',
     } */
+    /* #swagger.responses[400] = {
+        description: 'Invalid input',
+    } */
     /* #swagger.responses[500] = {
         description: 'Server error',
     } */
     try {
-        reviewController.createReview(req, res);
+        reviewController.createReview(req, res, next);
     } catch (error) {
-        // ADD LATER: Error handling
         next(error);
     }
 }));
 
-router.put('/:id', utils.handleErrors((req, res, next) => {
+router.put('/:id',
+    reviewValidation.addReviewRules(),
+    reviewValidation.validateReview,
+    utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['Review']
         #swagger.description = 'Update a review'
     */
-    /* #swagger.responses[200] = {
+    /* #swagger.responses[201] = {
         description: 'Review updated',
         schema: { }
     } */
@@ -111,9 +119,8 @@ router.put('/:id', utils.handleErrors((req, res, next) => {
         schema: { }
     } */
     try {
-        reviewController.updateReview(req, res);
+        reviewController.updateReview(req, res, next);
     } catch (error) {
-        // ADD LATER: Error handling
         next(error);
     }
 }));
@@ -122,7 +129,7 @@ router.delete('/:id', utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['Review']
         #swagger.description = 'Delete a review'
     */
-    /* #swagger.responses[200] = {
+    /* #swagger.responses[204] = {
         description: 'Review deleted',
         schema: { }
     } */
@@ -135,7 +142,7 @@ router.delete('/:id', utils.handleErrors((req, res, next) => {
         schema: { }
     } */
     try {
-        reviewController.deleteReview(req, res);
+        reviewController.deleteReview(req, res, next);
     } catch (error) {
         // ADD LATER: Error handling
         next(error);

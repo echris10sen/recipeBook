@@ -26,11 +26,9 @@ router.get('/', utils.handleErrors((req, res, next) => {
         description: 'Server error'
     } */
     try {
-        console.log("GET /");
-        recipeController.getAllRecipes(req, res);
+        recipeController.getAllRecipes(req, res, next);
     } catch (error) {
-        // ADD LATER: Error handling
-        next(new Api500Error(error.message));
+        next(error);
     }    
 }));
 
@@ -40,15 +38,13 @@ router.get('/random', utils.handleErrors((req, res, next) => {
     */
    /* #swagger.responses[200] = {
         description: 'Random recipe found',
-        schema: { }
     } */
     /* #swagger.responses[404] = {
         description: 'Recipe not found',
-        schema: { }
     } */
     /* #swagger.responses[500] = {
         description: 'Server error',
-        schema: { }
+
     } */
 
     try {
@@ -70,21 +66,18 @@ router.get('/:id', utils.handleErrors((req, res, next) => {
     } */
     /* #swagger.responses[200] = {
         description: 'Recipe found',
-        schema: { }
     } */
     /* #swagger.responses[404] = {
         description: 'Recipe not found',
-        schema: { }
     } */
     /* #swagger.responses[500] = {
         description: 'Server error',
-        schema: { }
     } */
     try {
         recipeController.getRecipe(req, res, next);
     } catch (error) {
         // ADD LATER: Error handling
-        next(new Api500Error(error.message));
+        next(error);
     }
 }));
 router.get('/search/:name', utils.handleErrors((req, res, next) => {
@@ -98,21 +91,18 @@ router.get('/search/:name', utils.handleErrors((req, res, next) => {
     } */
     /* #swagger.responses[200] = {
         description: 'Recipe found',
-        schema: { }
     } */
     /* #swagger.responses[404] = {
         description: 'Recipe not found',
-        schema: { }
     } */
     /* #swagger.responses[500] = {
         description: 'Server error',
-        schema: { }
     } */
 
     try {
         recipeController.getRecipeByName(req, res, next);
     } catch (error) {
-        next(new Api500Error(error.message));
+        next(error);
     }
 }));
 
@@ -135,22 +125,19 @@ router.post('/',
         } */
         /* #swagger.responses[201] = {
             description: 'Recipe created',
-            schema: { }
         } */
         /* #swagger.responses[400] = {
             description: 'Invalid input',
-            schema: { }
         } */
         /* #swagger.responses[500] = {
             description: 'Server error',
-            schema: { }
         } */
 
         try {
             recipeController.createRecipe(req, res);
         } catch (error) {
             // ADD LATER: Error handling
-            next(new Api500Error(error.message));
+            next(error);
         }
 }
 ));
@@ -173,31 +160,31 @@ router.put('/:id',
             required: true,
             content: {
                 'application/json': {
-                    schema: { }
+                    schema: { $ref: "#components/schemas/Recipe" }
                 }
             }
         } */
-        /* #swagger.responses[200] = {
+        /* #swagger.responses[201] = {
             description: 'Recipe updated',
-            schema: { }
+
         } */
         /* #swagger.responses[400] = {
             description: 'Invalid input',
-            schema: { }
+
         } */
         /* #swagger.responses[404] = {
             description: 'Recipe not found',
-            schema: { }
+
         } */
         /* #swagger.responses[500] = {
             description: 'Server error',
-            schema: { }
+
         } */
         try {
             recipeController.updateRecipe(req, res, next);
         } catch (error) {
             // ADD LATER: Error handling
-            next(new Api500Error(error.message));
+            next(error);
         }
 }));
 
@@ -211,22 +198,19 @@ router.delete('/:id', utils.handleErrors((req, res, next) => {
             required: true
             type: 'integer'
     } */
-    /* #swagger.responses[200] = {
+    /* #swagger.responses[204] = {
         description: 'Recipe deleted',
-        schema: { }
     } */
     /* #swagger.responses[404] = {
         description: 'Recipe not found',
-        schema: { }
     } */
     /* #swagger.responses[500] = {
         description: 'Server error',
-        schema: { }
     } */
     try {
         recipeController.deleteRecipe(req, res, next);
     } catch (error) {
-        next(Api500Error(error.message));
+        next(error);
     }
 }));
 

@@ -6,21 +6,24 @@ const utils = require('../utils');
 const { Api404Error } = require('../utils/errors/apiErrors');
 
 // Get all recipes
-const getAllRecipes = async (req, res) => {
-    const recipes = await Recipe.getRecipes();
-    res.status(200).json(recipes);
+const getAllRecipes = async (req, res, next) => {
+    try {
+        const recipes = await Recipe.getRecipes();
+        res.status(200).json(recipes);
+    } catch (error) {
+        next(error);
+    }
 };
 
 // Get a recipe by ID
 const getRecipe = async (req, res, next) => {
     try {
-    const recipe = await Recipe.getRecipe(req.params.id);
-    if (!recipe) {
-        throw new Api404Error('Recipe not found');
-    }
-    res.status(200).json(recipe);
+        const recipe = await Recipe.getRecipe(req.params.id);
+        if (!recipe) {
+            throw new Api404Error('Recipe not found');
+        }
+        res.status(200).json(recipe);
     } catch (error) {
-        console.log('error: ', error);
         next(error);
     }
 };
@@ -35,7 +38,6 @@ const getRecipeByName = async (req, res, next) => {
         }
         res.status(200).json(recipe);
     } catch (error) {
-        console.log('error: ', error);
         next(error);
     }
 };
@@ -50,16 +52,19 @@ const getRandomRecipe = async (req, res, next) => {
         res.status(200).json(recipe);
     }
     catch (error) {
-        console.log('error: ', error);
         next(error);
     }
 };
 
 // Create a recipe
 const createRecipe = async (req, res, next) => {
-    const data = req.body;
-    const recipe = await Recipe.createRecipe(data);
-    res.status(201).json(recipe);
+    try {
+        const data = req.body;
+        const recipe = await Recipe.createRecipe(data);
+        res.status(201).json(recipe);
+    } catch (error) {
+        next(error);
+    }
 };
 
 // Update a recipe
@@ -74,7 +79,6 @@ const updateRecipe = async (req, res, next) => {
         }
         res.status(200).json(recipe);
     } catch (error) {
-        console.log('error: ', error);
         next(error);
     }
 }
@@ -88,7 +92,6 @@ const deleteRecipe = async (req, res) => {
         }
         res.status(204).json(null);
     } catch (error) {
-        console.log('error: ', error);
         next(error);
     }
 }

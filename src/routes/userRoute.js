@@ -31,7 +31,7 @@ router.get('/profile', utils.handleErrors((req, res, next) => {
     try {
         userController.getProfile(req, res, next);
     } catch (error) {
-        next(Api500Error(error.message));
+        next(error);
     }
 }));
 
@@ -42,7 +42,7 @@ utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['User']
         #swagger.description = 'Update user profile'
     */
-    /* #swagger.responses[200] = {
+    /* #swagger.responses[201] = {
         description: 'Profile updated'
     } */
     /* #swagger.responses[404] = {
@@ -54,7 +54,7 @@ utils.handleErrors((req, res, next) => {
     try {
         userController.updateProfile(req, res, next);
     } catch (error) {
-        next(Api500Error(error.message));
+        next(error);
     }
 }));
 
@@ -74,7 +74,7 @@ router.delete('/profile', utils.handleErrors((req, res, next) => {
     try {
         userController.deleteUser(req, res, next);
     } catch (error) {
-        next(Api500Error(error.message));
+        next(error);
     }
 }));
 

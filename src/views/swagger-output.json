@@ -55,7 +55,7 @@
         "description": "OAuth2 Callback",
         "responses": {
           "500": {
-            "description": "Internal Server Error"
+            "description": "An error occurred"
           }
         }
       }
@@ -67,8 +67,8 @@
         ],
         "description": "Login",
         "responses": {
-          "default": {
-            "description": ""
+          "500": {
+            "description": "An error occurred"
           }
         }
       }
@@ -81,10 +81,10 @@
         "description": "Logout",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "User logged out"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Logout failed"
           }
         }
       }
@@ -105,7 +105,19 @@
                 "email": {
                   "example": "any"
                 },
-                "username": {
+                "name": {
+                  "example": "any"
+                },
+                "favorite_recipe_books": {
+                  "example": "any"
+                },
+                "favorite_recipes": {
+                  "example": "any"
+                },
+                "authored_books": {
+                  "example": "any"
+                },
+                "authored_recipes": {
                   "example": "any"
                 }
               }
@@ -132,7 +144,7 @@
             "description": "Conflict"
           },
           "500": {
-            "description": "Server error"
+            "description": "Internal Server Error"
           }
         },
         "requestBody": {
@@ -144,7 +156,19 @@
                   "email": {
                     "example": "any"
                   },
-                  "username": {
+                  "name": {
+                    "example": "any"
+                  },
+                  "favorite_recipe_books": {
+                    "example": "any"
+                  },
+                  "favorite_recipes": {
+                    "example": "any"
+                  },
+                  "authored_books": {
+                    "example": "any"
+                  },
+                  "authored_recipes": {
                     "example": "any"
                   }
                 }
@@ -188,7 +212,7 @@
         ],
         "description": "Create a book",
         "responses": {
-          "200": {
+          "201": {
             "description": "Book created",
             "content": {
               "application/json": {
@@ -210,9 +234,6 @@
                 }
               }
             }
-          },
-          "201": {
-            "description": "Created"
           },
           "400": {
             "description": "Invalid input",
@@ -363,27 +384,49 @@
             }
           }
         }
-      }
-    },
-    "/book/{userid}": {
-      "get": {
+      },
+      "put": {
         "tags": [
           "Book"
         ],
-        "description": "Get user",
+        "description": "Update a book",
         "parameters": [
           {
-            "name": "userid",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "Book ID"
           }
         ],
         "responses": {
-          "200": {
-            "description": "Recipe books found",
+          "201": {
+            "description": "Book updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
             "content": {
               "application/json": {
                 "schema": {
@@ -406,7 +449,7 @@
             }
           },
           "404": {
-            "description": "Recipe books not found",
+            "description": "Book not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -451,85 +494,6 @@
               }
             }
           }
-        }
-      },
-      "post": {
-        "tags": [
-          "Book"
-        ],
-        "description": "Create a recipe book",
-        "parameters": [
-          {
-            "name": "userid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Recipe book created"
-          },
-          "400": {
-            "description": "Invalid input"
-          },
-          "500": {
-            "description": "Server error"
-          }
-        },
-        "requestBody": {
-          "in": "body",
-          "description": "Book data",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Book"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/book/{userid}/{id}": {
-      "put": {
-        "tags": [
-          "Book"
-        ],
-        "description": "Update a posted recipe book",
-        "parameters": [
-          {
-            "name": "userid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Recipe book updated"
-          },
-          "400": {
-            "description": "Invalid input"
-          },
-          "404": {
-            "description": "Book not found"
-          },
-          "500": {
-            "description": "Server error"
-          }
         },
         "requestBody": {
           "in": "body",
@@ -548,31 +512,21 @@
         "tags": [
           "Book"
         ],
-        "description": "Delete a recipe book",
+        "description": "Delete a book",
         "parameters": [
-          {
-            "name": "userid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "Book ID"
           }
         ],
         "responses": {
-          "200": {
-            "description": "Recipe book deleted"
-          },
           "204": {
-            "description": "No Content"
+            "description": "Book deleted"
           },
           "404": {
             "description": "Book not found"
@@ -608,73 +562,13 @@
         "description": "Create a new recipe",
         "responses": {
           "201": {
-            "description": "Recipe created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Recipe created"
           },
           "400": {
-            "description": "Invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Invalid input"
           },
           "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Server error"
           }
         },
         "requestBody": {
@@ -686,6 +580,25 @@
                 "$ref": "#components/schemas/Recipe"
               }
             }
+          }
+        }
+      }
+    },
+    "/recipe/random": {
+      "get": {
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Get a random recipe",
+        "responses": {
+          "200": {
+            "description": "Random recipe found"
+          },
+          "404": {
+            "description": "Recipe not found"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
@@ -708,73 +621,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Recipe found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Recipe found"
           },
           "404": {
-            "description": "Recipe not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Recipe not found"
           },
           "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Server error"
           }
         }
       },
@@ -795,96 +648,19 @@
         ],
         "responses": {
           "200": {
-            "description": "Recipe updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "OK"
+          },
+          "201": {
+            "description": "Recipe updated"
           },
           "400": {
-            "description": "Invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Invalid input"
           },
           "404": {
-            "description": "Recipe not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Recipe not found"
           },
           "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Server error"
           }
         },
         "requestBody": {
@@ -892,7 +668,9 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {}
+              "schema": {
+                "$ref": "#components/schemas/Recipe"
+              }
             }
           }
         }
@@ -913,77 +691,14 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Recipe deleted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
           "204": {
-            "description": "No Content"
+            "description": "Recipe deleted"
           },
           "404": {
-            "description": "Recipe not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Recipe not found"
           },
           "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Server error"
           }
         }
       }
@@ -1006,753 +721,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Recipe found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Recipe found"
           },
           "404": {
-            "description": "Recipe not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Recipe not found"
           },
           "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/recipe/random": {
-      "get": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Get a random recipe",
-        "responses": {
-          "200": {
-            "description": "Random recipe found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Recipe not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/recipe/{userid}": {
-      "get": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Get user",
-        "parameters": [
-          {
-            "name": "userid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Recipes found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Recipes not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/recipe/{userid}/{id}": {
-      "get": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Get user",
-        "parameters": [
-          {
-            "name": "userid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Recipe found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Recipe not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Like a recipe",
-        "parameters": [
-          {
-            "name": "userid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Recipe liked",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Recipe not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "in": "body",
-          "description": "Recipe data",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Update a liked recipe",
-        "parameters": [
-          {
-            "name": "userid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Recipe updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Recipe not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Unlike a recipe",
-        "parameters": [
-          {
-            "name": "userid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Recipe unliked",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Recipe not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/recipe/{user}/search/{name}": {
-      "get": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Search for user",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Recipes found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Recipes not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Server error"
           }
         }
       }
@@ -1862,6 +837,9 @@
         "responses": {
           "201": {
             "description": "Review created"
+          },
+          "400": {
+            "description": "Invalid input"
           },
           "500": {
             "description": "Server error"
@@ -1974,7 +952,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Review updated",
             "content": {
               "application/json": {
@@ -2084,7 +1062,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Review deleted",
             "content": {
               "application/json": {
@@ -2106,9 +1084,6 @@
                 }
               }
             }
-          },
-          "204": {
-            "description": "No Content"
           },
           "404": {
             "description": "Review not found",
@@ -2195,79 +1170,58 @@
             "description": "Server error"
           }
         }
-      }
-    },
-    "/user/settings": {
-      "get": {
+      },
+      "put": {
         "tags": [
           "User"
         ],
-        "description": "Get user settings",
+        "description": "Update user profile",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Settings found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "OK"
+          },
+          "201": {
+            "description": "Profile updated"
           },
           "404": {
-            "description": "Settings not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Profile not found"
           },
           "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
+            "description": "Server error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "name": {
+                    "example": "any"
+                  },
+                  "favorite_recipe_books": {
+                    "example": "any"
+                  },
+                  "favorite_recipes": {
+                    "example": "any"
+                  },
+                  "authored_books": {
+                    "example": "any"
+                  },
+                  "authored_recipes": {
+                    "example": "any"
                   }
                 }
               }
@@ -2275,80 +1229,32 @@
           }
         }
       },
-      "put": {
+      "delete": {
         "tags": [
           "User"
         ],
-        "description": "Update user settings",
+        "description": "Delete user profile",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Settings updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "OK"
           },
-          "400": {
-            "description": "Invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+          "204": {
+            "description": "Profile deleted"
+          },
+          "404": {
+            "description": "Profile not found"
           },
           "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "type": "object",
-                  "properties": {},
-                  "xml": {
-                    "name": "main"
-                  }
-                }
-              }
-            }
+            "description": "Server error"
           }
         }
       }
@@ -2387,7 +1293,39 @@
                     "properties": {
                       "type": {
                         "type": "string",
-                        "example": "string"
+                        "example": "object"
+                      },
+                      "properties": {
+                        "type": "object",
+                        "properties": {
+                          "ingredient_name": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "example": "string"
+                              }
+                            }
+                          },
+                          "quantity": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "example": "number"
+                              }
+                            }
+                          },
+                          "units": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "example": "string"
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -2443,7 +1381,16 @@
                 "properties": {
                   "type": {
                     "type": "string",
-                    "example": "string"
+                    "example": "array"
+                  },
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "string"
+                      }
+                    }
                   }
                 }
               },
@@ -2456,12 +1403,88 @@
                   }
                 }
               },
-              "nutritionInfo": {
+              "nutrition": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "object"
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "calories": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "number"
+                          }
+                        }
+                      },
+                      "fat": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "number"
+                          }
+                        }
+                      },
+                      "sugar": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "number"
+                          }
+                        }
+                      },
+                      "protein": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "number"
+                          }
+                        }
+                      },
+                      "sodium": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "author": {
                 "type": "object",
                 "properties": {
                   "type": {
                     "type": "string",
                     "example": "string"
+                  }
+                }
+              },
+              "authorId": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "format": {
+                    "type": "string",
+                    "example": "ObjectId"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "The ID of the author of the recipe"
                   }
                 }
               }
@@ -2491,6 +1514,32 @@
                   }
                 }
               },
+              "author": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  }
+                }
+              },
+              "authorId": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "format": {
+                    "type": "string",
+                    "example": "ObjectId"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "The ID of the author of the book"
+                  }
+                }
+              },
               "recipes": {
                 "type": "object",
                 "properties": {
@@ -2504,6 +1553,10 @@
                       "type": {
                         "type": "string",
                         "example": "string"
+                      },
+                      "format": {
+                        "type": "string",
+                        "example": "ObjectId"
                       }
                     }
                   }
@@ -2541,6 +1594,57 @@
                   "type": {
                     "type": "string",
                     "example": "string"
+                  }
+                }
+              },
+              "recipeId": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "format": {
+                    "type": "string",
+                    "example": "ObjectId"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "The ID of the recipe being reviewed"
+                  }
+                }
+              },
+              "bookId": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "format": {
+                    "type": "string",
+                    "example": "ObjectId"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "The ID of the book being reviewed"
+                  }
+                }
+              },
+              "authorId": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "format": {
+                    "type": "string",
+                    "example": "ObjectId"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "The ID of the user who wrote the review"
                   }
                 }
               }

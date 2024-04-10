@@ -2,8 +2,10 @@
 const express = require('express');
 const router = express.Router();
 const bookController = require('../controllers/bookController');
+const bookValidation = require('../utils/validation/bookValidation');
 const userController = require('../controllers/userController');
 const utils = require('../utils');
+const { Api500Error } = require('../utils/errors/apiErrors');
 
 /************************************
  * General Book Routes
@@ -23,9 +25,8 @@ router.get('/', utils.handleErrors((req, res, next) => {
         description: 'Server error'
     } */
     try {
-        bookController.getBooks(req, res);
+        bookController.getBooks(req, res, next);
     } catch (error) {
-        // ADD LATER: Error handling
         next(error);
     }
 }));
@@ -53,14 +54,16 @@ router.get('/:id', utils.handleErrors((req, res, next) => {
         schema: { }
     } */
     try {
-        bookController.getBook(req, res);
+        bookController.getBook(req, res, next);
     } catch (error) {
-        // ADD LATER: Error handling
         next(error);
     }
 }));
 
-router.post('/', utils.handleErrors((req, res, next) => {
+router.post('/', 
+bookValidation.addBookRules(),
+bookValidation.validateBook,
+utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['Book']
         #swagger.description = 'Create a book'
     */
@@ -74,7 +77,7 @@ router.post('/', utils.handleErrors((req, res, next) => {
             }
         }
     } */
-    /* #swagger.responses[200] = {
+    /* #swagger.responses[201] = {
         description: 'Book created',
         schema: { }
     } */
@@ -87,44 +90,24 @@ router.post('/', utils.handleErrors((req, res, next) => {
         schema: { }
     } */
     try {
-        bookController.createBook(req, res);
+        bookController.createBook(req, res, next);
     } catch (error) {
-        // ADD LATER: Error handling
         next(error);
     }
 }));
 
-/************************************
- * User Recipe Book Routes
- * **********************************/
-router.get('/:userid', utils.handleErrors((req, res, next) => {
+router.put('/:id',
+bookValidation.addBookRules(),
+bookValidation.validateBook,
+utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['Book']
-        #swagger.description = 'Get user's recipe books'
-    */
-    /* #swagger.responses[200] = {
-        description: 'Recipe books found',
-        schema: { }
-    } */
-    /* #swagger.responses[404] = {
-        description: 'Recipe books not found',
-        schema: { }
-    } */
-    /* #swagger.responses[500] = {
-        description: 'Server error',
-        schema: { }
-    } */
-    try {
-        userController.getBooks(req, res);
-    } catch (error) {
-        // ADD LATER: Error handling
-        next(error);
-    }
-}));
-
-
-router.post('/:userid', utils.handleErrors((req, res, next) => {
-    /* #swagger.tags = ['Book']
-        #swagger.description = 'Create a recipe book'
+        #swagger.description = 'Update a book'
+        #swagger.parameters['id'] = {
+            in: 'path',
+            description: 'Book ID',
+            required: true,
+            type: 'integer'
+        }
     */
     /* #swagger.requestBody = {
         in: 'body',
@@ -132,77 +115,45 @@ router.post('/:userid', utils.handleErrors((req, res, next) => {
         required: true,
         content: {
             'application/json': {
-                schema: { $ref: "#/components/schemas/Book"}
+                schema: { $ref: "#/components/schemas/Book" }
             }
         }
     } */
     /* #swagger.responses[201] = {
-        description: 'Recipe book created',
+        description: 'Book updated',
+        schema: { }
     } */
     /* #swagger.responses[400] = {
         description: 'Invalid input',
-    } */
-    /* #swagger.responses[500] = {
-        description: 'Server error',
-    } */
-    try {
-        userController.createBook(req, res);
-    } catch (error) {
-        // ADD LATER: Error handling
-        next(error);
-    }
-}));
-
-router.put('/:userid/:id', utils.handleErrors((req, res, next) => {
-    /* #swagger.tags = ['Book']
-        #swagger.description = 'Update a posted recipe book'
-        #swagger.parameters['id'] = { 
-            in: 'path',
-            description: 'Book ID' 
-            required: true
-            type: 'integer'
-    } */
-    /* #swagger.requestBody = {
-        in: 'body',
-        description: 'Book data',
-        required: true,
-        content: {
-            'application/json': {
-                schema: { $ref: "#/components/schemas/Book"}
-            }
-        }
-    } */
-    /* #swagger.responses[200] = {
-        description: 'Recipe book updated',
-    } */
-    /* #swagger.responses[400] = {
-        description: 'Invalid input',
+        schema: { }
     } */
     /* #swagger.responses[404] = {
         description: 'Book not found',
+        schema: { }
     } */
     /* #swagger.responses[500] = {
         description: 'Server error',
+        schema: { }
     } */
     try {
-        userController.updateBook(req, res);
+        bookController.updateBook(req, res, next);
     } catch (error) {
-        // ADD LATER: Error handling
         next(error);
     }
 }));
 
-router.delete('/:userid/:id', utils.handleErrors((req, res, next) => {
+router.delete('/:id', utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['Book']
-        #swagger.description = 'Delete a recipe book'
-        #swagger.parameters['id'] = { 
+        #swagger.description = 'Delete a book'
+        #swagger.parameters['id'] = {
             in: 'path',
-            description: 'Book ID' 
-            required: true
+            description: 'Book ID',
+            required: true,
             type: 'integer'
-    } */
-    /* #swagger.responses[200] = {
-        description: 'Recipe book deleted'
+        }
+    */
+    /* #swagger.responses[204] = {
+        description: 'Book deleted'
     } */
     /* #swagger.responses[404] = {
         description: 'Book not found'
@@ -211,9 +162,8 @@ router.delete('/:userid/:id', utils.handleErrors((req, res, next) => {
         description: 'Server error'
     } */
     try {
-        userController.deleteBook(req, res);
+        bookController.deleteBook(req, res, next);
     } catch (error) {
-        // ADD LATER: Error handling
         next(error);
     }
 }));

@@ -17,10 +17,13 @@ const people_services = require('googleapis/build/src/apis/people');
 
 
 // Middleware
-router.get('/oauth2callback', utils.handleErrors(async (req, res) => {
+router.get('/oauth2callback', utils.handleErrors(async (req, res, next) => {
     /* #swagger.tags = ['Auth']
         #swagger.description = 'OAuth2 Callback'
     */
+    /* #swagger.responses[500] = {
+        description: 'An error occurred',
+    } */
     try {
         oauth2Callback(req, res);
     } catch (error) {
@@ -39,6 +42,9 @@ router.get('/login', utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['Auth']
         #swagger.description = 'Login'
     */
+    /* #swagger.responses[500] = {
+        description: 'An error occurred',
+    } */
 
     try {
         const authorizationUrl = oauth.generateAuthUrl();
@@ -61,6 +67,12 @@ router.get('/logout', utils.handleErrors(async (req, res) => {
     /* #swagger.tags = ['Auth']
         #swagger.description = 'Logout'
     */
+   /* #swagger.responses[200] = {
+        description: 'User logged out',
+    } */
+    /* #swagger.responses[500] = {
+        description: 'Logout failed',
+    } */
     try {
         authUtils.logout(req, res);
     } catch (error) {
@@ -93,13 +105,15 @@ router.post('/register',
     /* #swagger.responses[400] = {
         description: 'Invalid input',
     } */
+    /* #swagger.responses[409] = {
+        description: 'User already exists',
     /* #swagger.responses[500] = {
         description: 'Server error',
     } */
     try {
-        authController.registerUser(req, res);
+        authController.registerUser(req, res, next);
     } catch (error) {
-        next(new Api500Error('Server error', 500, error.message));
+        next(error);
     }
 
 }));
