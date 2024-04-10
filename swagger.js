@@ -73,44 +73,68 @@ const doc = {
             type: 'string'
           },
         }  
-      }
-    },
-    Book: {
-      type: 'object',
-      properties: {
-        name: {
-          type: 'string'
-        },
-        recipes: {
-          type: 'array',
-          items: {
+      },
+      Book: {
+        type: 'object',
+        properties: {
+          name: {
             type: 'string'
+          },
+          recipes: {
+            type: 'array',
+            items: {
+              type: 'string'
+            }
+          }
+        }
+      },
+      Review: {
+        type: 'object',
+        properties: {
+          rating: {
+            type: 'number'
+          },
+          comment: {
+            type: 'string'
+          }
+        }
+      },
+      User: {
+        type: 'object',
+        properties: {
+          $name: {
+            type: 'string'
+          },
+          $email: {
+            type: 'string'
+          },
+          favorite_recipe_books: {
+            type: 'array',
+            items: {
+              type: 'string'
+            }
+          },
+          favorite_recipes: {
+            type: 'array',
+            items: {
+              type: 'string'
+            }
+          },
+          authored_books: {
+            type: 'array',
+            items: {
+              type: 'string'
+            }
+          },
+          authored_recipes: {
+            type: 'array',
+            items: {
+              type: 'string'
+            }
           }
         }
       }
     },
-    Review: {
-      type: 'object',
-      properties: {
-        rating: {
-          type: 'number'
-        },
-        comment: {
-          type: 'string'
-        }
-      }
-    },
-    User: {
-      type: 'object',
-      properties: {
-        username: {
-          type: 'string'
-        },
-        email: {
-          type: 'string'
-        }
-      }
-    }
   },
 };
 

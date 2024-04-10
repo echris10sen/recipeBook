@@ -6,17 +6,10 @@ const { ObjectId } = require('mongodb');
 
 const collection = 'users';
 
-// Get all users
-const getUsers = async () => {
-    const db = client.db();
-    const users = await db.collection(collection).find().toArray();
-    return users;
-};
-
 // Get a user by ID
 const getUser = async (id) => {
     const db = client.db();
-    const user = await db.collection(collection).findOne({ _id: ObjectId(id) });
+    const user = await db.collection(collection).findOne({ _id: new ObjectId(id) });
     return user;
 };
 
@@ -27,24 +20,23 @@ const createUser = async (user) => {
     return result.ops[0];
 };
 
-// Update a user
-const updateUser = async (id, user) => {
+// Update a profile
+const updateProfile= async (id, user) => {
     const db = client.db();
-    const result = await db.collection(collection).findOneAndUpdate({ _id: ObjectId(id) }, { $set: user }, { returnOriginal: false });
-    return result.value;
+    const result = await db.collection(collection).findOneAndUpdate({ _id: new ObjectId(id) }, { $set: user }, { returnOriginal: false });
+    return result;
 };
 
 // Delete a user
 const deleteUser = async (id) => {
     const db = client.db();
-    const result = await db.collection(collection).deleteOne({ _id: ObjectId(id) });
-    return result.deletedCount;
+    const result = await db.collection(collection).deleteOne({ _id: new ObjectId(id) });
+    return result;
 };
 
 module.exports = {
-    getUsers,
     getUser,
     createUser,
-    updateUser,
+    updateProfile,
     deleteUser
 };

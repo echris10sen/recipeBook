@@ -4,48 +4,48 @@
 const User = require('../models/userModel');
 const recipeController = require('./recipeController');
 const bookController = require('./bookController');
+const { Api404Error } = require('../utils/errors/apiErrors');
 const utils = require('../utils');
 
-// Get all users
-const getUsers = async (req, res) => {
-    const users = await User.find();
-    res.status(200).json(users);
-};
-
 // Get a user by ID
-const getUser = async (req, res) => {
-    const user = await User.findById(req.params.id);
+const getProfile = async (req, res, next) => {
+   try {
+    console.log('req.params.id: ', req.query.id);
+    const user = await User.getUser(req.query.id);
     if (!user) {
-        throw new utils.NotFoundError('User not found');
+        throw new Error('User not found', 404);
     }
     res.status(200).json(user);
+    } catch (error) {
+        console.log('error: ', error);
+        next(new Api404Error(error.message));
+    }
 };
-
-// Create a user
-const createUser = async (req, res) => {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
-};
-
 // Update a user
-const updateUser = async (req, res) => {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+const updateProfile = async (req, res, next) => {
+    const user = await User.updateProfile(req.query.id, req.body, {
             new: true,
             runValidators: true
         });
+    console.log('user: ', user);
     if (!user) {
-        throw new utils.NotFoundError('User not found');
+        next(new Api404Error('User not found'));
     }
     res.status(200).json(user);
 }
 
 // Delete a user
-const deleteUser = async (req, res) => {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) {
-        throw new utils.NotFoundError('User not found');
+const deleteUser = async (req, res, next) => {
+    try {
+        const user = await User.getUser(req.query.id);
+        if (!user) {
+            throw(new Api404Error('User not found'));
+        }
+        await User.deleteUser(req.query.id);
+        res.status(200).send('User deleted');
+    } catch (error) {
+        next(error);
     }
-    res.status(204).json();
 }
 
 // Get user's recipe books
@@ -139,10 +139,8 @@ const deleteRecipe = async (req, res) => {
 }
 
 module.exports = {
-    getUsers,
-    getUser,
-    createUser,
-    updateUser,
+    getProfile,
+    updateProfile,
     deleteUser,
     getBooks,
     createBook,

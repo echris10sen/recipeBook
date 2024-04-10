@@ -1,8 +1,10 @@
 // Desc: User routes
 const express = require('express');
 const router = express.Router();
+const userValidation = require('../utils/validation/userValidation');
 const userController = require('../controllers/userController');
 const utils = require('../utils');
+const { Api400Error, Api404Error, Api500Error } = require('../utils/errors/apiErrors');
 const { route } = require('./api-docs');
 
 // Middleware
@@ -27,57 +29,52 @@ router.get('/profile', utils.handleErrors((req, res, next) => {
         description: 'Server error'
     } */
     try {
-        userController.getProfile(req, res);
+        userController.getProfile(req, res, next);
     } catch (error) {
-        // ADD LATER: Error handling
-        next(error);
-    }
-}));
-router.get('/settings', utils.handleErrors((req, res, next) => {
-    /* #swagger.tags = ['User']
-        #swagger.description = 'Get user settings'
-    */
-    /* #swagger.responses[200] = {
-        description: 'Settings found',
-        schema: { }
-    } */
-    /* #swagger.responses[404] = {
-        description: 'Settings not found',
-        schema: { }
-    } */
-    /* #swagger.responses[500] = {
-        description: 'Server error',
-        schema: { }
-    } */
-    try {
-        userController.getSettings(req, res);
-    } catch (error) {
-        // ADD LATER: Error handling
-        next(error);
+        next(Api500Error(error.message));
     }
 }));
 
-router.put('/settings', utils.handleErrors((req, res, next) => {
+router.put('/profile',
+userValidation.updateProfileValidationRules(),
+userValidation.validateUpdateProfile,
+utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['User']
-        #swagger.description = 'Update user settings'
+        #swagger.description = 'Update user profile'
     */
     /* #swagger.responses[200] = {
-        description: 'Settings updated',
-        schema: { }
+        description: 'Profile updated'
     } */
-    /* #swagger.responses[400] = {
-        description: 'Invalid input',
-        schema: { }
+    /* #swagger.responses[404] = {
+        description: 'Profile not found'
     } */
     /* #swagger.responses[500] = {
-        description: 'Server error',
-        schema: { }
+        description: 'Server error'
     } */
     try {
-        userController.updateSettings(req, res);
+        userController.updateProfile(req, res, next);
     } catch (error) {
-        // ADD LATER: Error handling
-        next(error);
+        next(Api500Error(error.message));
+    }
+}));
+
+router.delete('/profile', utils.handleErrors((req, res, next) => {
+    /* #swagger.tags = ['User']
+        #swagger.description = 'Delete user profile'
+    */
+    /* #swagger.responses[204] = {
+        description: 'Profile deleted'
+    } */
+    /* #swagger.responses[404] = {
+        description: 'Profile not found'
+    } */
+    /* #swagger.responses[500] = {
+        description: 'Server error'
+    } */
+    try {
+        userController.deleteUser(req, res, next);
+    } catch (error) {
+        next(Api500Error(error.message));
     }
 }));
 

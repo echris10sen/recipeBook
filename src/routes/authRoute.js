@@ -1,11 +1,17 @@
 // Desc: Authentication route
+const  {oauth2Callback} = require('../controllers/authController');
+const { Api500Error } = require('../utils/errors/apiErrors');
+const authUtils = require('../utils/auth/oauth');
+const authValidation = require('../utils/validation/authValidation');
 const axios = require('axios');
+const colors = require('colors');
 const express = require('express');
 const router = express.Router();
-// const authController = require('../controllers/authController');
+const authController = require('../controllers/authController');
 const url = require('url');
 const utils = require('../utils');
 const { log } = require('console');
+const oauth = require('../config/auth/oauth');
 const { oauth2Client, generateAuthUrl }= require('../config/auth/oauth');
 const people_services = require('googleapis/build/src/apis/people');
 
@@ -16,32 +22,7 @@ router.get('/oauth2callback', utils.handleErrors(async (req, res) => {
         #swagger.description = 'OAuth2 Callback'
     */
     try {
-        let queryData = url.parse(req.url, true).query;
-   
-        let {tokens} = await oauth2Client.getToken(queryData.code);
-        log(tokens);
-        
-        // Store the tokens in the session
-        req.session.tokens = tokens;
-        req.session.save();
-        console.log('tokens: ', req.session.tokens);
-
-        await oauth2Client.setCredentials(tokens);
-        
-        const people = people_services.people({
-            version: 'v1',
-            auth: oauth2Client
-        });
-        const me = await people.people.get({
-            resourceName: 'people/me',
-            personFields: 'emailAddresses,names,photos'
-        });
-    
-        console.log(me.data.names[0].displayName);
-        res.set('Cache-Control', 'no-store, must-revalidate');
-        res.set('Pragma', 'no-cache');
-        res.set('Expires', '0');
-        res.send('OAuth2 Callback');
+        oauth2Callback(req, res);
     } catch (error) {
         if (error.message === 'invalid_grant') {
             // Redirect the user back to the authorization URL
@@ -49,16 +30,31 @@ router.get('/oauth2callback', utils.handleErrors(async (req, res) => {
             res.redirect(authorizationUrl);
           } else {
             // Handle other errors
-            console.error(error);
+            console.error(`An error has occured:`.blue +`${error}`);
             res.status(500).send('An error occurred');
           }
         }
 }));
-router.get('/login', utils.handleErrors((req, res) => {
+router.get('/login', utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['Auth']
         #swagger.description = 'Login'
     */
-    res.send('Login');
+
+    try {
+        const authorizationUrl = oauth.generateAuthUrl();
+            // console.log('authorizationUrl: ', authorizationUrl);
+            res.redirect(authorizationUrl);
+        } catch (error) {
+            if (error.message === 'invalid_grant') {
+                // Redirect the user back to the authorization URL
+                const authorizationUrl = oauth.generateAuthUrl();
+                res.redirect(authorizationUrl);
+            } else {
+                // Handle other errors
+                console.error(error);
+                next(new Api500Error('An error occurred', 500, 'An error occurred while logging in'));   
+            }
+        }
 }));
 
 router.get('/logout', utils.handleErrors(async (req, res) => {
@@ -66,34 +62,49 @@ router.get('/logout', utils.handleErrors(async (req, res) => {
         #swagger.description = 'Logout'
     */
     try {
-        let access_token;
-        if (req.session && req.session.tokens) {
-            access_token = req.session.tokens.access_token;
-        } else {
-            throw new Error('No tokens found in session');
-        }
-        //Server side logout
-        if (req.session) {
-            req.session.destroy((err) => {
-                if (err) {
-                    console.log(err);
-                    throw new Error('Error destroying session');
-                }
-            });
-        }
-        //Client side logout
-        const response = await axios.get('https://accounts.google.com/o/oauth2/revoke?token=' + access_token);
-
-        if (response.status === 200) {
-            res.clearCookie('session-token');
-            res.send('Logout successful');
-        } else {
-            throw new Error('Error revoking token');
-        }
+        authUtils.logout(req, res);
     } catch (error) {
         console.error(error);
         res.status(500).send('Logout failed');
     }
 }));
 
+router.post('/register', 
+    authValidation.registerUserValidationRules(), 
+    authValidation.validateRegisterUser,
+    utils.handleErrors((req, res, next) => {
+    /* #swagger.tags = ['Auth']
+        #swagger.description = 'Register a new user'
+    */
+    /* #swagger.parameters['obj'] = {
+        in: 'body',
+        description: 'User information',
+        required: true,
+        content: {
+            'application/json': {
+                schema: { $ref: "#components/schemas/User" }
+            }
+        }
+    } */
+    /* #swagger.responses[201] = {
+        description: 'User created',
+        
+    } */
+    /* #swagger.responses[400] = {
+        description: 'Invalid input',
+    } */
+    /* #swagger.responses[500] = {
+        description: 'Server error',
+    } */
+    try {
+        authController.registerUser(req, res);
+    } catch (error) {
+        next(new Api500Error('Server error', 500, error.message));
+    }
+
+}));
+
+router.get('/', utils.handleErrors((req, res) => {
+    res.redirect('auth/oauth2callback');
+}));
 module.exports = router;

@@ -36,10 +36,26 @@
   "paths": {
     "/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Root"
+        ],
+        "description": "Root",
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/oauth2callback": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "OAuth2 Callback",
+        "responses": {
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -51,8 +67,8 @@
         ],
         "description": "Login",
         "responses": {
-          "200": {
-            "description": "OK"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -66,6 +82,84 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Register a new user",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "username": {
+                  "example": "any"
+                }
+              }
+            },
+            "description": "User information",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#components/schemas/User"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "username": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
@@ -274,7 +368,6 @@
     "/book/{userid}": {
       "get": {
         "tags": [
-          "User",
           "Book"
         ],
         "description": "Get user",
@@ -362,7 +455,6 @@
       },
       "post": {
         "tags": [
-          "User",
           "Book"
         ],
         "description": "Create a recipe book",
@@ -404,7 +496,6 @@
     "/book/{userid}/{id}": {
       "put": {
         "tags": [
-          "User",
           "Book"
         ],
         "description": "Update a posted recipe book",
@@ -455,7 +546,6 @@
       },
       "delete": {
         "tags": [
-          "User",
           "Book"
         ],
         "description": "Delete a recipe book",
@@ -1069,7 +1159,6 @@
     "/recipe/{userid}": {
       "get": {
         "tags": [
-          "User",
           "Recipe"
         ],
         "description": "Get user",
@@ -1159,7 +1248,6 @@
     "/recipe/{userid}/{id}": {
       "get": {
         "tags": [
-          "User",
           "Recipe"
         ],
         "description": "Get user",
@@ -1255,7 +1343,6 @@
       },
       "post": {
         "tags": [
-          "User",
           "Recipe"
         ],
         "description": "Like a recipe",
@@ -1361,7 +1448,6 @@
       },
       "put": {
         "tags": [
-          "User",
           "Recipe"
         ],
         "description": "Update a liked recipe",
@@ -1480,7 +1566,6 @@
       },
       "delete": {
         "tags": [
-          "User",
           "Recipe"
         ],
         "description": "Unlike a recipe",
@@ -1578,7 +1663,6 @@
     "/recipe/{user}/search/{name}": {
       "get": {
         "tags": [
-          "User",
           "Recipe"
         ],
         "description": "Search for user",
@@ -2091,6 +2175,15 @@
           "User"
         ],
         "description": "Get user profile",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Profile found"
@@ -2378,41 +2471,195 @@
         "xml": {
           "name": "Recipe"
         }
-      }
-    },
-    "Book": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "recipes": {
-          "type": "array",
-          "items": {
-            "type": "string"
+      },
+      "Book": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "object"
+          },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  }
+                }
+              },
+              "recipes": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "array"
+                  },
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
-        }
-      }
-    },
-    "Review": {
-      "type": "object",
-      "properties": {
-        "rating": {
-          "type": "number"
         },
-        "comment": {
-          "type": "string"
+        "xml": {
+          "name": "Book"
         }
-      }
-    },
-    "User": {
-      "type": "object",
-      "properties": {
-        "username": {
-          "type": "string"
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "object"
+          },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "rating": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "number"
+                  }
+                }
+              },
+              "comment": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  }
+                }
+              }
+            }
+          }
         },
-        "email": {
-          "type": "string"
+        "xml": {
+          "name": "Review"
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "object"
+          },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  }
+                }
+              },
+              "email": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  }
+                }
+              },
+              "favorite_recipe_books": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "array"
+                  },
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "favorite_recipes": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "array"
+                  },
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "authored_books": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "array"
+                  },
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "authored_recipes": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "array"
+                  },
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "example": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "name",
+              "email"
+            ]
+          }
+        },
+        "xml": {
+          "name": "User"
         }
       }
     }

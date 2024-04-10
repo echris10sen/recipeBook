@@ -98,7 +98,7 @@ router.post('/', utils.handleErrors((req, res, next) => {
  * User Recipe Book Routes
  * **********************************/
 router.get('/:userid', utils.handleErrors((req, res, next) => {
-    /* #swagger.tags = ['User', 'Book']
+    /* #swagger.tags = ['Book']
         #swagger.description = 'Get user's recipe books'
     */
     /* #swagger.responses[200] = {
@@ -123,7 +123,7 @@ router.get('/:userid', utils.handleErrors((req, res, next) => {
 
 
 router.post('/:userid', utils.handleErrors((req, res, next) => {
-    /* #swagger.tags = ['User', 'Book']
+    /* #swagger.tags = ['Book']
         #swagger.description = 'Create a recipe book'
     */
     /* #swagger.requestBody = {
@@ -154,7 +154,7 @@ router.post('/:userid', utils.handleErrors((req, res, next) => {
 }));
 
 router.put('/:userid/:id', utils.handleErrors((req, res, next) => {
-    /* #swagger.tags = ['User', 'Book']
+    /* #swagger.tags = ['Book']
         #swagger.description = 'Update a posted recipe book'
         #swagger.parameters['id'] = { 
             in: 'path',
@@ -193,7 +193,7 @@ router.put('/:userid/:id', utils.handleErrors((req, res, next) => {
 }));
 
 router.delete('/:userid/:id', utils.handleErrors((req, res, next) => {
-    /* #swagger.tags = ['User', 'Book']
+    /* #swagger.tags = ['Book']
         #swagger.description = 'Delete a recipe book'
         #swagger.parameters['id'] = { 
             in: 'path',

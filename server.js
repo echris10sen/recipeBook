@@ -38,7 +38,10 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure }
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 1000 * 60 * 60 * 24 * 7 * 2 // 2 weeks
+  }
 }));
 
 /************************************
@@ -54,5 +57,5 @@ const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-  console.log(`Server is running on http://${host}:${port}`.green.bold);
+  console.log(`Server is running on http://${host}:${port}`.magenta.bold);
 });
