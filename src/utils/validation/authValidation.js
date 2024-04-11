@@ -3,13 +3,13 @@ const { body, validationResult } = require('express-validator');
 // Ensure Session
 
 function ensureSession(req, res, next) {
-    // console.log('req.session: ', req.session);
-    // console.log('req.session.id: ', req.session.id);
-    // if (req.session.tokens && req.session.id && req.session) {
-    //     next();
-    // } else {
-    //     res.status(401).send('Unauthorized');
-    // }
+    console.log('req.session: ', req.session);
+    console.log('req.session.id: ', req.session.id);
+    if (req.session.tokens && req.session.id && req.session) {
+        next();
+    } else {
+        res.status(401).send('Unauthorized');
+    }
     next();
 }
 
