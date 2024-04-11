@@ -16,6 +16,7 @@ const oauth2ClientProd = new google.auth.OAuth2(
 
 const oauth2Client = process.env.NODE_ENV === 'production' ? oauth2ClientProd : oauth2ClientDev;
 
+
 const generateAuthUrl = () => {
     console.log('oauth2Client: ', oauth2Client);
     /**
@@ -27,7 +28,7 @@ const generateAuthUrl = () => {
 
     // Access scopes for read-only Drive activity.
     const scopes = [
-    'https://www.googleapis.com/auth/drive.metadata.readonly',
+    'openid',
     'https://www.googleapis.com/auth/userinfo.profile',
     'https://www.googleapis.com/auth/userinfo.email'
     ];
