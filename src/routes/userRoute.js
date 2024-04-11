@@ -6,16 +6,17 @@ const userController = require('../controllers/userController');
 const utils = require('../utils');
 const { Api400Error, Api404Error, Api500Error } = require('../utils/errors/apiErrors');
 const { route } = require('./api-docs');
+const { ensureSession } = require('../utils/validation/authValidation');
 
 // Middleware
 router.get('/', utils.handleErrors((req, res, next) => {
-    res.redirect('/profile');
+    res.redirect('/user/profile');
 }));
 
 /************************************
  * User Routes
  * **********************************/
-router.get('/profile', utils.handleErrors((req, res, next) => {
+router.get('/profile', ensureSession, utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['User']
         #swagger.description = 'Get user profile'
     */
@@ -36,6 +37,7 @@ router.get('/profile', utils.handleErrors((req, res, next) => {
 }));
 
 router.put('/profile',
+ensureSession,
 userValidation.updateProfileValidationRules(),
 userValidation.validateUpdateProfile,
 utils.handleErrors((req, res, next) => {
@@ -58,7 +60,9 @@ utils.handleErrors((req, res, next) => {
     }
 }));
 
-router.delete('/profile', utils.handleErrors((req, res, next) => {
+router.delete('/profile', 
+ensureSession,
+utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['User']
         #swagger.description = 'Delete user profile'
     */

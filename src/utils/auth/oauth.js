@@ -78,9 +78,6 @@ async function oauth2CallbackUtil(req, res) {
                 res.set('Pragma', 'no-cache');
                 res.set('Expires', '0');
                 res.redirect('/api-docs');
-            } else {
-                console.error('An error occured at src/utils/oauth.js at oauth2CallbackUtil'.red, error);
-                res.status(500).send('An error occurred');
             }
         }
     } catch(error) {

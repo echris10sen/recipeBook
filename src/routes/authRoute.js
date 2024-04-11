@@ -17,27 +17,6 @@ const people_services = require('googleapis/build/src/apis/people');
 
 
 // Middleware
-router.get('/oauth2callback', utils.handleErrors(async (req, res, next) => {
-    /* #swagger.tags = ['Auth']
-        #swagger.description = 'OAuth2 Callback'
-    */
-    /* #swagger.responses[500] = {
-        description: 'An error occurred',
-    } */
-    try {
-        oauth2Callback(req, res);
-    } catch (error) {
-        if (error.message === 'invalid_grant') {
-            // Redirect the user back to the authorization URL
-            const authorizationUrl = generateAuthUrl();
-            res.redirect(authorizationUrl);
-          } else {
-            // Handle other errors
-            console.error(`An error has occured:`.blue +`${error}`);
-            res.status(500).send('An error occurred');
-          }
-        }
-}));
 router.get('/login', utils.handleErrors((req, res, next) => {
     /* #swagger.tags = ['Auth']
         #swagger.description = 'Login'
@@ -62,6 +41,29 @@ router.get('/login', utils.handleErrors((req, res, next) => {
             }
         }
 }));
+
+router.get('/oauth2callback', utils.handleErrors(async (req, res, next) => {
+    /* #swagger.tags = ['Auth']
+        #swagger.description = 'OAuth2 Callback'
+    */
+    /* #swagger.responses[500] = {
+        description: 'An error occurred',
+    } */
+    try {
+       await oauth2Callback(req, res, next);
+    } catch (error) {
+        if (error.message === 'invalid_grant') {
+            // Redirect the user back to the authorization URL
+            const authorizationUrl = generateAuthUrl();
+            res.redirect(authorizationUrl);
+          } else {
+            // Handle other errors
+            console.error(`An error has occured:`.blue +`${error}`);
+            next(error)
+          }
+        }
+}));
+
 
 router.get('/logout', utils.handleErrors(async (req, res) => {
     /* #swagger.tags = ['Auth']

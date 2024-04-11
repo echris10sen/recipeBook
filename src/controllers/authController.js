@@ -11,7 +11,7 @@ const { MongoNetworkError } = require('mongodb');
 dotenv.config();
 
 async function oauth2Callback(req, res) {
-    oauth2CallbackUtil(req, res);
+    await oauth2CallbackUtil(req, res);
 }
 
 async function registerUser(req, res) {

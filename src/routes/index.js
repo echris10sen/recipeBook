@@ -35,7 +35,7 @@ router.use('/recipe', ensureSession, recipeRoute);
 router.use('/review', ensureSession, reviewRoute);
 
 // User
-router.use('/user', ensureSession, userRoute);
+router.use('/user', userRoute);
 
 /****************************************************************************************
  * Routes
