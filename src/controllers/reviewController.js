@@ -11,7 +11,7 @@ const getReviews = async (req, res, next) => {
         const reviews = await Review.getReviews();
         res.status(200).json(reviews);
     } catch (error) {
-        throw new Api404Error('Reviews not found');
+        next(error);
     }
 };
 

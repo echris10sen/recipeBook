@@ -1,5 +1,5 @@
 const client = require('../config/mongodbConnect');
-const { ObjectId } = require('mongodb');
+const { ObjectId, MongoNetworkError } = require('mongodb');
 
 const collection = 'users';
 

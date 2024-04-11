@@ -3,6 +3,7 @@
  **********************************/
 const client = require('../config/mongodbConnect');
 const { ObjectId } = require('mongodb');
+const { MongoNetworkError } = require('mongodb');
 
 const collection = 'users';
 

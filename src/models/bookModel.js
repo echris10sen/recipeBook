@@ -3,7 +3,7 @@
  ***************************/
 const client = require('../config/mongodbConnect');
 const { Api400Error, Api404Error, Api500Error } = require('../utils/errors/apiErrors');
-const { ObjectId } = require('mongodb');
+const { ObjectId, MongoNetworkError } = require('mongodb');
 
 const collection = 'books';
 
