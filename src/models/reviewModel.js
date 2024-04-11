@@ -2,9 +2,9 @@
  * Review Model
  ***************************/
 const client = require('../config/mongodbConnect');
-const { ObjectId } = require('mongodb');
+const { ObjectId, MongoNetworkError } = require('mongodb');
 const { Api400Error, Api404Error, Api500Error } = require('../utils/errors/apiErrors');
-const { MongoNetworkError } = require('mongodb');
+
 
 const collection = 'reviews';
 

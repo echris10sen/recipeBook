@@ -26,7 +26,6 @@ const getRecipe = async (id) => {
     try {
         const db = client.db();
         const recipe = await db.collection(collection).findOne({ _id: new ObjectId(id) });
-        console.log(recipe);
         return recipe;
     } catch (error) {
         if (error instanceof MongoNetworkError) {
@@ -87,7 +86,7 @@ const updateRecipe = async (id, recipe) => {
     try {
         const db = client.db();
         const result = await db.collection(collection).findOneAndUpdate({ _id: new ObjectId(id) }, { $set: recipe }, { returnOriginal: false });
-        return result.value;
+        return result;
     } catch {
         if (error instanceof MongoNetworkError) {
             throw new Api500Error('Internal server error');

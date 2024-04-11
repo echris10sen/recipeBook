@@ -24,6 +24,7 @@ const getRecipe = async (req, res, next) => {
         }
         res.status(200).json(recipe);
     } catch (error) {
+        console.log(error);
         next(error);
     }
 };
@@ -75,6 +76,7 @@ const updateRecipe = async (req, res, next) => {
                 runValidators: true
             });
         if (!recipe) {
+            console.log('Recipe not found');
             throw new Api404Error('Recipe not found');
         }
         res.status(200).json(recipe);
