@@ -17,6 +17,7 @@ const oauth2ClientProd = new google.auth.OAuth2(
 const oauth2Client = process.env.NODE_ENV === 'production' ? oauth2ClientProd : oauth2ClientDev;
 
 const generateAuthUrl = () => {
+    console.log('oauth2Client: ', oauth2Client);
     /**
      * To use OAuth2 authentication, we need access to a CLIENT_ID, CLIENT_SECRET, AND REDIRECT_URI
      * from the client_secret.json file. To get these credentials for your application, visit
